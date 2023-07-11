@@ -1,0 +1,11 @@
+services:
+  dev-container:
+    # https://github.com/microsoft/vscode-dev-containers/blob/main/containers/typescript-node/.devcontainer/Dockerfile
+    image: mcr.microsoft.com/vscode/devcontainers/typescript-node:18-bullseye
+    ports:
+      - "8443:8443"
+      - "8084:8084" #graphQL    
+  
+  fauna:
+    image: fauna/faunadb:latest
+    network_mode: service:dev-container    

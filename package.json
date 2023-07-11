@@ -1,0 +1,24 @@
+{
+  "name": "typescript-worker",
+  "version": "1.0.0",
+  "description": "Example project using TypeScript",
+  "scripts": {
+    "dev": "wrangler dev --remote=false --live-reload",
+    "test": "npm run build && node --experimental-vm-modules --no-warnings node_modules/jest/bin/jest.js",
+    "types:check": "tsc && tsc -p test/tsconfig.json",
+    "deploy": "wrangler publish"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.0.0",
+    "vitest": "^0.31.0",
+    "wrangler": "^3.0.0"
+  },
+  "dependencies": {
+    "@cloudflare/itty-router-openapi": "^0.1.9",
+    "@tsndr/cloudflare-worker-router": "^2.3.3",
+    "faunadb": "^4.8.0"
+  }
+}
