@@ -13,7 +13,7 @@ FAUNA_PORT = 443
 
 [env.dev]
 kv_namespaces = [
-    { binding = "example", id = "***", preview_id = "***" },
+    { binding = "WORKER_DATA", id = "N/A", preview_id = "N/A" },
 ]
 
 [env.dev.vars]
