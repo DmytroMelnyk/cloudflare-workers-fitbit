@@ -7,6 +7,9 @@ compatibility_flags = []
 FAUNA_DOMAIN = "localhost"
 FAUNA_SCHEME = "http"
 FAUNA_PORT = 8443
+kv_namespaces = [
+    { binding = "WORKER_DATA", id = "N/A", preview_id = "2d519e2907f94aae9af2549a1c217afb"}
+]
 
 [env.production]
 kv_namespaces = [
