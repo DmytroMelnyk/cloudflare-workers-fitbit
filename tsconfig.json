@@ -8,7 +8,7 @@
     "types": [
       "@cloudflare/workers-types"
     ],
-    "moduleResolution": "node",
+    "moduleResolution": "Node",
     "strict": true,
     "noEmit": true,
     "esModuleInterop": true,
