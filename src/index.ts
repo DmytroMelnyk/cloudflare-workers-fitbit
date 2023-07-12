@@ -37,9 +37,9 @@ const router = OpenAPIRouter({
 	}
 });
 
-router.get("/fitbit/weight/:clientId/:from/:to", ClientWeight);
-router.get("/fitbit/auth/:clientId", ClientAuth);
-router.get("/fitbit/callback/:clientId", ClientCallback);
+router.get("/weight/:clientId/:from/:to", ClientWeight);
+router.get("/auth/:clientId", ClientAuth);
+router.get("/callback/:clientId", ClientCallback);
 router.get("/api/products", ProductList);
 router.post("/api/products", ProductCreate);
 router.get("/api/products/:productId", ProductFetch);

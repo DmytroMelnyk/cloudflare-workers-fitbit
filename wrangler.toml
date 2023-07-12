@@ -1,11 +1,7 @@
-name = "fitbit-worker-dev"
+name = "fitbit-worker"
 main = "src/index.ts"
 compatibility_date = "2022-11-28"
 compatibility_flags = []
-
-kv_namespaces = [
-    { binding = "WORKER_DATA", id = "b954d632e8b94ec8bb50f5f53691381a", preview_id = "2bc3450964f049b1921ca95993b260e4" },
-]
 
 [vars]
 FAUNA_DOMAIN = "localhost"
@@ -13,7 +9,9 @@ FAUNA_SCHEME = "http"
 FAUNA_PORT = 8443
 
 [env.production]
-name = "fitbit-worker"
+kv_namespaces = [
+    { binding = "WORKER_DATA", id = "b954d632e8b94ec8bb50f5f53691381a" },
+]
 
 [env.production.vars]
 FAUNA_DOMAIN = "db.us.fauna.com"

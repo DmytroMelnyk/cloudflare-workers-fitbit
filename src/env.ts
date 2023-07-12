@@ -9,6 +9,7 @@ export interface Env {
 }
 
 export function createFaunaClient(env: Env) {
+  console.log(env.FAUNA_DOMAIN);
   return new faunadb.Client({
     secret: env.FAUNA_KEY ?? "secret",
     endpoint: env.FAUNA_SCHEME + "://" + env.FAUNA_DOMAIN + ":" + env.FAUNA_PORT + "/"
