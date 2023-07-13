@@ -4,6 +4,7 @@ import { FitbitApiAuthorizer } from "./fitbit/FitbitApiAuthorizer";
 import { ApiScope } from "./fitbit/ApiScope";
 import { FitbitApiData } from "./fitbit/FitbitApiData";
 import { FitbitApiClient } from "./fitbit/FitbitApiClient";
+import { toXML } from 'jstoxml';
 
 export class ClientAuth extends OpenAPIRoute {
 	static schema = {
@@ -99,6 +100,7 @@ export class ClientWeight extends OpenAPIRoute {
 		const fitbitData = (await FitbitApiData.get(env, clientId));
 		const client = new FitbitApiClient(fitbitData.oauth2Token.access_token);
 		const response = await client.getWeight(from, to);
-		return response;
+		const jsonData = await response.json();
+		return new Response(toXML(jsonData));
 	}
 }
