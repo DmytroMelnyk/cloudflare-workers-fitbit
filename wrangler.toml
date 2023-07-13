@@ -6,6 +6,9 @@ kv_namespaces = [
     { binding = "WORKER_DATA", id = "b954d632e8b94ec8bb50f5f53691381a" }
 ]
 
+[triggers]
+crons = ["0 */6 * * *"]
+
 [vars]
 FAUNA_DOMAIN = "db.us.fauna.com"
 FAUNA_SCHEME = "https"
@@ -20,3 +23,6 @@ kv_namespaces = [
 FAUNA_DOMAIN = "localhost"
 FAUNA_SCHEME = "http"
 FAUNA_PORT = 8443
+
+[env.dev.triggers]
+crons = ["* * * * *"]

@@ -7,6 +7,7 @@ export interface FitbitApiDataDto {
     clientSecret: string;
 }
 
+// https://developers.cloudflare.com/workers/runtime-apis/kv/#metadata-1
 export class FitbitApiData implements FitbitApiDataDto {
     constructor(public oauth2Token: OAuth2Token | undefined, public clientId: string, public clientSecret: string) {
     }
@@ -26,7 +27,16 @@ export class FitbitApiData implements FitbitApiDataDto {
         return <FitbitApiDataDto>JSON.parse(data);
     }
 
+    static async for_all<T>(environment: Env, action: (data: FitbitApiDataDto) => Promise<T>, parallelism_level: number = 5): Promise<void> {
+        var iterator: KVNamespaceListResult<unknown, string> | null = null;
+        do {
+            iterator = await environment.WORKER_DATA.list({ prefix: "FitbitApiData", cursor: iterator?.cursor, limit: parallelism_level });
+            const tokens = await Promise.all(iterator.keys.map(key => environment.WORKER_DATA.get(key.name)));
+            await Promise.all(tokens.filter(token => token).map(token => <FitbitApiDataDto>JSON.parse(token!)).map(token => action(token!)));
+        } while (!iterator.list_complete);
+    }
+
     private static key(clientId: string) {
-        return `FitbitApiData#${clientId}`;
+        return `FitbitApiData:${clientId}`;
     }
 }

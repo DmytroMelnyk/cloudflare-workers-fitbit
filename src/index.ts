@@ -2,6 +2,9 @@ import './__global';
 import { OpenAPIRouter } from '@cloudflare/itty-router-openapi';
 import { ProductCreate, ProductDelete, ProductFetch, ProductList, ProductUpdateQuantity } from "./products";
 import { ClientAuth, ClientCallback, ClientWeight } from "./fitbit";
+import { FitbitApiData } from './fitbit/FitbitApiData';
+import { Env } from './env';
+import { FitbitApiAuthorizer } from './fitbit/FitbitApiAuthorizer';
 
 
 const router = OpenAPIRouter({
@@ -55,6 +58,19 @@ router.original.get("/", (request) =>
 router.all("*", () => new Response("Not Found.", { status: 404 }));
 
 export default {
+
 	fetch: router.handle,
+
+	// https://developers.cloudflare.com/workers/runtime-apis/scheduled-event/#syntax
+	async scheduled(event: ScheduledEvent, env: Env, ctx: ExecutionContext) {
+		await FitbitApiData
+			.for_all(env, async x => {
+				if (!x.oauth2Token) {
+					return;
+				}
+				const authorizer = new FitbitApiAuthorizer(x.clientId, x.clientSecret);
+				await authorizer.extendAccessToken(x.oauth2Token!.refresh_token);
+			});
+	},
 };
 

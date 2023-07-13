@@ -30,3 +30,4 @@ npx brainyduck --domain localhost --port 8443 --scheme http --graphql-domain loc
 
 npx wrangler kv:namespace create fitbit --preview
 npx wrangler tail fitbit-worker-production
+curl "http://localhost:8787/__scheduled?cron=*+*+*+*+*"
