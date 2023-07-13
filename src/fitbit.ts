@@ -33,7 +33,23 @@ export class ClientAuth extends OpenAPIRoute {
 		const api = new FitbitApiAuthorizer(clientId, clientSecret);
 		await FitbitApiData.put(env, clientId, clientSecret, undefined);
 
-		const callback_url = api.getLoginUrl(`${new URL(request.url).origin}/callback/${clientId}`, ApiScope.WEIGHT);
+		const callback_url = api.getLoginUrl(
+			`${new URL(request.url).origin}/callback/${clientId}`,
+			ApiScope.ACTIVITY,
+			ApiScope.CARDIO_FITNESS,
+			ApiScope.ELECTROCARDIOGRAM,
+			ApiScope.HEARTRATE,
+			ApiScope.LOCATION,
+			ApiScope.NUTRITION,
+			ApiScope.OXYGEN_SATURATION,
+			ApiScope.PROFILE,
+			ApiScope.RESPIRATORY_RATE,
+			ApiScope.SETTINGS,
+			ApiScope.SLEEP,
+			ApiScope.SOCIAL,
+			ApiScope.TEMPERATURE,
+			ApiScope.WEIGHT
+		);
 		return Response.redirect(callback_url, 302);
 	}
 }

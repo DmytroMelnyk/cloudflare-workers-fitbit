@@ -31,3 +31,7 @@ npx brainyduck --domain localhost --port 8443 --scheme http --graphql-domain loc
 npx wrangler kv:namespace create fitbit --preview
 npx wrangler tail fitbit-worker-production
 curl "http://localhost:8787/__scheduled?cron=*+*+*+*+*"
+
+Need to create personal token, because:
+https://dev.fitbit.com/build/reference/web-api/intraday/
+A Fitbit developer’s personal Intraday data is automatically available through the “Personal” application type. You do not need to submit a request.
