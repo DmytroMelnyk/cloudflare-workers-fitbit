@@ -144,20 +144,19 @@ export class CronHandler {
 	) {
 		const timezone = "-04:00";
 		const fitbitData = await FitbitApiData.get(env, clientId);
-		console.log(clientId);
 		const client = new FitbitApiClient(fitbitData.oauth2Token.access_token);
 		const repository = new WeightRepository(env);
-		const latestTimestamp = await repository.getLatest(clientId);
-
-		const historyDtos = latestTimestamp ?
-			await client.getWeight(new Date(), latestTimestamp) :
+		const latest = await repository.getLatest(clientId);
+		const historyDtos = latest[1] ?
+			await client.getWeight(latest[1], new Date()) :
 			await client.getWeightAt(new Date());
 
-		if (!historyDtos) {
+		if (!historyDtos.length) {
 			return;
 		}
 
 		const history = historyDtos
+			.filter(x => x.logId > latest[0])
 			.map(x => <Weight>{
 				_id: String(x.logId),
 				clientId,
@@ -169,9 +168,6 @@ export class CronHandler {
 		await repository.insertMany(history);
 	}
 }
-
-
-
 
 export class TestRoute extends OpenAPIRoute {
 	static schema = {

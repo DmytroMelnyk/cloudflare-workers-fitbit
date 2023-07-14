@@ -8,12 +8,11 @@ export class WeightRepository {
     collection!: globalThis.Realm.Services.MongoDB.MongoDBCollection<Weight>;
 
     constructor(env: Env) {
-        console.log(`${env.ATLAS_APP_ID}:${env.ATLAS_APP_KEY}`);
         this.app = new Realm.App({ id: env.ATLAS_APP_ID });
         this.credentials = Realm.Credentials.apiKey(env.ATLAS_APP_KEY);
     }
 
-    async getLatest(clientId: string): Promise<Date> {
+    async getLatest(clientId: string): Promise<[logId: number, timestamp: Date | undefined]> {
         const collection = await this.getCollection();
         const results = await collection.aggregate([
             {
@@ -22,16 +21,22 @@ export class WeightRepository {
             {
                 $group: {
                     _id: "$clientId",
-                    timestamp: { $last: "$timestamp" }
+                    timestamp: { $last: "$timestamp" },
+                    entryId: { $last: "$_id" }
                 }
             }
         ]);
 
-        return results[0]?.timestamp;
+        return [Number(results[0]?.entryId), results[0].timestamp];
     }
 
     async insertMany(entries: Weight[]) {
+        if (!entries.length) {
+            return;
+        }
+
         const collection = await this.getCollection();
+        //collection.findOneAndReplace({ _id: entries[0]._id }, entries[0], { upsert: true });
         return await collection.insertMany(entries);
     }
 
