@@ -43,7 +43,7 @@ export class FitbitApiAuthorizer {
             body: requestBody
         });
 
-        const body = await response.json();
+        const body = await response.json<OAuth2Token>();
         return body;
     }
 }

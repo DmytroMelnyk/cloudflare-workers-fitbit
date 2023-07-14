@@ -31,12 +31,24 @@ export class FitbitApiData implements FitbitApiDataDto {
         var iterator: KVNamespaceListResult<unknown, string> | null = null;
         do {
             iterator = await environment.WORKER_DATA.list({ prefix: "FitbitApiData", cursor: iterator?.cursor, limit: parallelism_level });
-            const tokens = await Promise.all(iterator.keys.map(key => environment.WORKER_DATA.get(key.name)));
-            await Promise.all(tokens.filter(token => token).map(token => <FitbitApiDataDto>JSON.parse(token!)).map(token => action(token!)));
+            const tokens = await Promise.all(iterator.keys.map(key => FitbitApiData.get(environment, FitbitApiData.clientId(key.name))));
+            await Promise.all(tokens.filter(token => token).map(token => action(token!)));
+        } while (!iterator.list_complete);
+    }
+
+    static async for_all_keys<T>(environment: Env, action: (clientId: string) => Promise<T>, parallelism_level: number = 5): Promise<void> {
+        var iterator: KVNamespaceListResult<unknown, string> | null = null;
+        do {
+            iterator = await environment.WORKER_DATA.list({ prefix: "FitbitApiData:", cursor: iterator?.cursor, limit: parallelism_level });
+            await Promise.all(iterator.keys.map(key => action(FitbitApiData.clientId(key.name))));
         } while (!iterator.list_complete);
     }
 
     private static key(clientId: string) {
         return `FitbitApiData:${clientId}`;
+    }
+
+    private static clientId(key: string) {
+        return key.replace("FitbitApiData:", "");
     }
 }

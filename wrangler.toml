@@ -7,12 +7,13 @@ kv_namespaces = [
 ]
 
 [triggers]
-crons = ["0 */6 * * *"]
+crons = [
+    "55 */6 * * *",
+    "0 * * * *"
+]
 
 [vars]
-FAUNA_DOMAIN = "db.us.fauna.com"
-FAUNA_SCHEME = "https"
-FAUNA_PORT = 443
+ATLAS_APP_ID = "application-0-nsnje"
 
 [env.dev]
 kv_namespaces = [
@@ -23,6 +24,5 @@ kv_namespaces = [
 FAUNA_DOMAIN = "localhost"
 FAUNA_SCHEME = "http"
 FAUNA_PORT = 8443
-
-[env.dev.triggers]
-crons = ["* * * * *"]
+ATLAS_APP_ID = "application-0-nsnje"
+# echo <VALUE> | npx wrangler secret put ATLAS_APP_KEY --env dev

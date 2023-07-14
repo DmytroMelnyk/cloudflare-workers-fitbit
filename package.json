@@ -19,6 +19,6 @@
   "dependencies": {
     "@cloudflare/itty-router-openapi": "^0.1.10",
     "@tsndr/cloudflare-worker-router": "^2.3.3",
-    "faunadb": "^4.8.0"
+    "realm-web": "^2.0.0"
   }
 }
