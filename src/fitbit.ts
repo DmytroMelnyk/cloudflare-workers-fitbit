@@ -203,6 +203,6 @@ export class TestRoute extends OpenAPIRoute {
 
 		const history = await repository.getWeight(clientId, daysBefore);
 
-		return new Response(JSONtoXML({ entry: history }));
+		return new Response(JSONtoXML({ data: { entry: history } }));
 	}
 }
