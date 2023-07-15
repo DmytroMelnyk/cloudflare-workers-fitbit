@@ -29,7 +29,7 @@ npm install
 npx brainyduck --domain localhost --port 8443 --scheme http --graphql-domain localhost --graphql-port 8084
 
 npx wrangler kv:namespace create fitbit --preview
-npx wrangler tail fitbit-worker-production
+npx wrangler tail fitbit
 curl "http://localhost:8787/__scheduled?cron=*+*+*+*+*"
 
 Need to create personal token, because:

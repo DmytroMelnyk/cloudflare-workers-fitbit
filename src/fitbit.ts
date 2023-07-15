@@ -6,7 +6,7 @@ import { FitbitApiData } from "./fitbit/FitbitApiData";
 import { FitbitApiClient } from "./fitbit/FitbitApiClient";
 import { WeightRepository } from "./domain/WeightRepository";
 import { Weight } from "./domain/Weight";
-
+import { JSONtoXML } from "./util";
 
 export class ClientAuth extends OpenAPIRoute {
 	static schema = {
@@ -114,8 +114,11 @@ export class ClientWeight extends OpenAPIRoute {
 	) {
 		const { clientId, from, to } = data;
 
-
 		const fitbitData = (await FitbitApiData.get(env, clientId));
+		if (!fitbitData || !fitbitData.oauth2Token) {
+			return new Response("User not registered", { status: 400 });
+		}
+
 		const client = new FitbitApiClient(fitbitData.oauth2Token.access_token);
 		const response = await client.getWeight(from, to);
 
@@ -143,7 +146,11 @@ export class CronHandler {
 		clientId: string
 	) {
 		const timezone = "-04:00";
-		const fitbitData = await FitbitApiData.get(env, clientId);
+		const fitbitData = (await FitbitApiData.get(env, clientId));
+		if (!fitbitData || !fitbitData.oauth2Token) {
+			return new Response("User not registered", { status: 400 });
+		}
+
 		const client = new FitbitApiClient(fitbitData.oauth2Token.access_token);
 		const repository = new WeightRepository(env);
 		const latest = await repository.getLatest(clientId);
@@ -194,7 +201,8 @@ export class TestRoute extends OpenAPIRoute {
 		const { clientId, daysBefore } = data;
 		const repository = new WeightRepository(env);
 
-		const history = repository.getWeight(clientId, daysBefore);
-		return history;
+		const history = await repository.getWeight(clientId, daysBefore);
+
+		return new Response(JSONtoXML({ entry: history }));
 	}
 }
