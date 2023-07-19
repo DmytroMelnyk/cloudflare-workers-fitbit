@@ -1,0 +1,4 @@
+interface SleepDto {
+    sleep: SleepEntryDto[];
+}
+

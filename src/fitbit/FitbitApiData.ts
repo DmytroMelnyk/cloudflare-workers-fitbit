@@ -37,7 +37,7 @@ export class FitbitApiData implements FitbitApiDataDto {
     }
 
     static async for_all_keys<T>(environment: Env, action: (clientId: string) => Promise<T>, parallelism_level: number = 5): Promise<void> {
-        var iterator: KVNamespaceListResult<unknown, string> | null = null;
+        var iterator: KVNamespaceListResult<any, string> | null = null;
         do {
             iterator = await environment.WORKER_DATA.list({ prefix: "FitbitApiData:", cursor: (iterator && 'cursor' in iterator) ? iterator.cursor : null, limit: parallelism_level });
             await Promise.all(iterator.keys.map(key => action(FitbitApiData.clientId(key.name))));

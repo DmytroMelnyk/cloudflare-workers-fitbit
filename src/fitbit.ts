@@ -176,6 +176,24 @@ export class CronHandler {
 	}
 }
 
+
+// HEALTH METRICS:
+// https://api.fitbit.com/1/user/-/br/date/2023-07-11/2023-07-16.json // .breathingRate
+/*
+In general, a higher average HRV is linked to greater overall health and fitness. A significant drop in your HRV can have many causes, including a poor night’s sleep, physical strain, diet, or being emotionally or physically stressed. 
+Again, a significant drop in your HRV may mean that your body is in fight-or-flight mode, so look to see if your HRV has been trending downward over multiple nights. You could also just be in a normal recovery phase after some intense workouts! 
+But, if that’s the case, you guessed it—your lower HRV is letting you know that your body is in need of rest. You may want to consider prioritizing recovery to bounce back from potential overtraining, lack of sleep, hormonal changes, psychological stress, and more
+*/
+// https://api.fitbit.com/1/user/-/hrv/date/2023-06-16/2023-07-16.json // .dailyRmssd 
+// https://api.fitbit.com/1/user/-/temp/skin/date/2023-06-25/2023-07-15.json // .nightlyRelative
+// https://api.fitbit.com/1/user/-/activities/heart/date/2023-06-15/2023-07-15.json | jq '."activities-heart"[].value.restingHeartRate'
+
+// https://api.fitbit.com/1/user/-/activities/calories/date/2023-07-01/1m.json
+// https://api.fitbit.com/1/user/-/activities/steps/date/2023-07-01/1m.json
+// https://api.fitbit.com/1.2/user/-/sleep/date/2023-06-05/2023-07-05.json
+// https://api.fitbit.com/1/user/-/activities/active-zone-minutes/date/2023-07-10/2023-07-16.json // .activeZoneMinutes
+
+
 export class TestRoute extends OpenAPIRoute {
 	static schema = {
 		tags: ["Test"],
