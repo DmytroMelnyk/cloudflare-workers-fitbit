@@ -23,6 +23,11 @@ export class FitbitApiClient {
         return this.getSleep(from, to);
     }
 
+    /*
+    In general, a higher average HRV is linked to greater overall health and fitness. A significant drop in your HRV can have many causes, including a poor night’s sleep, physical strain, diet, or being emotionally or physically stressed. 
+    Again, a significant drop in your HRV may mean that your body is in fight-or-flight mode, so look to see if your HRV has been trending downward over multiple nights. You could also just be in a normal recovery phase after some intense workouts! 
+    But, if that’s the case, you guessed it—your lower HRV is letting you know that your body is in need of rest. You may want to consider prioritizing recovery to bounce back from potential overtraining, lack of sleep, hormonal changes, psychological stress, and more
+    */
     async getHrv(from: Date, to: Date): Promise<HrvEntryDto[]> {
         const response = await this.get(`/1/user/-/hrv/date/${from.fitbitFormat()}/${to.fitbitFormat()}.json`);
         return (await response.json<HrvDto>()).hrv;

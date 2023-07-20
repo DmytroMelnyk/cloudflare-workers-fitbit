@@ -28,8 +28,4 @@ export enum ApiScope {
     TEMPERATURE = "temperature",
     //Includes weight and body fat information, such as body mass index, body fat percentage, and goals.
     WEIGHT = "weight",
-
-
-
-
 }

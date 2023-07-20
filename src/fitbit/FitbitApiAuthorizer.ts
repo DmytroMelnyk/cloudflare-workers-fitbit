@@ -13,7 +13,6 @@ export class FitbitApiAuthorizer {
             `redirect_uri=${encodeURIComponent(returnUrl)}`;
     }
 
-
     // https://dev.fitbit.com/build/reference/web-api/authorization/oauth2-token/
     requestOAuth2Token(code: string, returnUrl: string): Promise<OAuth2Token> {
         return this.getOAuth2Token(new URLSearchParams({
