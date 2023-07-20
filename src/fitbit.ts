@@ -187,11 +187,11 @@ But, if that’s the case, you guessed it—your lower HRV is letting you know t
 // https://api.fitbit.com/1/user/-/hrv/date/2023-06-16/2023-07-16.json // .dailyRmssd 
 // https://api.fitbit.com/1/user/-/temp/skin/date/2023-06-25/2023-07-15.json // .nightlyRelative
 // https://api.fitbit.com/1/user/-/activities/heart/date/2023-06-15/2023-07-15.json | jq '."activities-heart"[].value.restingHeartRate'
-
-// https://api.fitbit.com/1/user/-/activities/calories/date/2023-07-01/1m.json
-// https://api.fitbit.com/1/user/-/activities/steps/date/2023-07-01/1m.json
-// https://api.fitbit.com/1.2/user/-/sleep/date/2023-06-05/2023-07-05.json
+// https://api.fitbit.com/1/user/-/activities/calories/date/2023-06-15/2023-07-15.json
 // https://api.fitbit.com/1/user/-/activities/active-zone-minutes/date/2023-07-10/2023-07-16.json // .activeZoneMinutes
+// https://api.fitbit.com/1/user/-/activities/steps/date/2023-06-15/2023-07-15.json
+// https://api.fitbit.com/1.2/user/-/sleep/date/2023-06-05/2023-07-05.json
+
 
 
 export class TestRoute extends OpenAPIRoute {
