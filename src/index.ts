@@ -1,6 +1,7 @@
 import './__global';
 import { OpenAPIRouter } from '@cloudflare/itty-router-openapi';
-import { ClientAuth, ClientCallback, ClientWeight, CronHandler, TestRoute } from "./fitbit";
+import { ClientAuth, ClientCallback, ClientWeight, TestRoute } from "./router/fitbit";
+import { CronHandler } from './cron/fitbit';
 import { FitbitApiData } from './fitbit/FitbitApiData';
 import { Env } from './env';
 
