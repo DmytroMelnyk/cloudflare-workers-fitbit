@@ -1,8 +1,8 @@
+// https://dev.fitbit.com/build/reference/web-api/
 export class FitbitApiClient {
     constructor(private access_token: string) {
     }
 
-    // https://dev.fitbit.com/build/reference/web-api/body-timeseries/get-weight-timeseries-by-date-range/
     async getWeight(from: Date, to: Date): Promise<WeightEntryDto[]> {
         const response = await this.get(`/1/user/-/body/log/weight/date/${from.fitbitFormat()}/${to.fitbitFormat()}.json`);
         return (await response.json<WeightDto>()).weight;

@@ -1,7 +1,7 @@
 import { ApiScope } from "./ApiScope";
 import { OAuth2Token } from "./OAuth2Token";
 
-
+// https://dev.fitbit.com/build/reference/web-api/
 export class FitbitApiAuthorizer {
     constructor(private clientId: string, private clientSecret: string) {
     }
