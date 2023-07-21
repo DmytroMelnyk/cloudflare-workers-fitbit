@@ -63,14 +63,15 @@ export default {
 			case "55 */6 * * *":
 				await FitbitApiData.for_all(env, x => CronHandler.refreshToken(env, x));
 				break;
-			case "0 * * * *":
-				await FitbitApiData.for_all_keys(env, clientId => CronHandler.syncWeight(env, clientId));
-				break;
-			case "* * * * *":
-				console.log(new Date().getMinutes());
-				const syncActivity = <ActivityType>Object.values(ActivityType)[new Date().getMinutes() % 7];
-				console.log(syncActivity);
-				await FitbitApiData.for_all_keys(env, clientId => CronHandler.syncActivity(env, clientId, syncActivity));
+			case "0-7 * * * *":
+				const minute = new Date().getMinutes();
+				if (minute < 7) {
+					const syncActivity = <ActivityType>Object.values(ActivityType)[minute % 7];
+					await FitbitApiData.for_all_keys(env, clientId => CronHandler.syncActivity(env, clientId, syncActivity));
+				}
+				else {
+					await FitbitApiData.for_all_keys(env, clientId => CronHandler.syncWeight(env, clientId));
+				}
 				break;
 			default:
 				console.log(`unprocessed cron: ${event.cron}`);
