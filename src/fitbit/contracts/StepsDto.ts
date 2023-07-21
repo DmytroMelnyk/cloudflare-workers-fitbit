@@ -2,7 +2,6 @@ interface StepsDto {
     activities_steps: StepsEntryDto[];
 }
 
-interface StepsEntryDto {
-    dateTime: string;
+interface StepsEntryDto extends ActivityDto {
     value: number;
 }

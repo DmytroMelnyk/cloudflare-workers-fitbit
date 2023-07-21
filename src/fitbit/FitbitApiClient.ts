@@ -39,7 +39,7 @@ export class FitbitApiClient {
     }
 
     async getTempSkin(from: Date, to: Date): Promise<TempSkinEntryDto[]> {
-        const response = await this.get(`/1/user/-/hrv/date/${from.fitbitFormat()}/${to.fitbitFormat()}.json`);
+        const response = await this.get(`/1/user/-/temp/skin/date/${from.fitbitFormat()}/${to.fitbitFormat()}.json`);
         return (await response.json<TempSkinDto>()).tempSkin;
     }
 

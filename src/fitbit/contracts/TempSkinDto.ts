@@ -2,9 +2,8 @@ interface TempSkinDto {
     tempSkin: TempSkinEntryDto[];
 }
 
-interface TempSkinEntryDto {
+interface TempSkinEntryDto extends ActivityDto {
     value: RelativeTempDto;
-    dateTime: string;
 }
 
 interface RelativeTempDto {

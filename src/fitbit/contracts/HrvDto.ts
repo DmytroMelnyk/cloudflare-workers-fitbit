@@ -2,8 +2,7 @@ interface HrvDto {
     hrv: HrvEntryDto[];
 }
 
-interface HrvEntryDto {
-    dateTime: string;
+interface HrvEntryDto extends ActivityDto {
     value: RmssdDto;
 }
 

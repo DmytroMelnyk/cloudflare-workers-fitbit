@@ -4,6 +4,9 @@ import { FitbitApiData } from "../fitbit/FitbitApiData";
 import { FitbitApiClient } from "../fitbit/FitbitApiClient";
 import { WeightRepository } from "../domain/WeightRepository";
 import { Weight } from "../domain/Weight";
+import { Activity, ActivityType } from "../domain/Activity";
+import { ActivityRepository } from "../domain/ActivityRepository";
+import { ActivityProvider } from "../domain/ActivityProvider";
 
 export class CronHandler {
 
@@ -51,5 +54,39 @@ export class CronHandler {
 			});
 
 		await repository.insertMany(history);
+	}
+
+	static async syncActivity(
+		env: Env,
+		clientId: string,
+		activityType: ActivityType
+	) {
+		//TODO: Timezone is defined at
+		//https://api.fitbit.com/1/user/-/profile.json .timezone //America/Toronto
+		const fitbitData = (await FitbitApiData.get(env, clientId));
+		if (!fitbitData || !fitbitData.oauth2Token) {
+			return new Response("User not registered", { status: 400 });
+		}
+
+		const client = new FitbitApiClient(fitbitData.oauth2Token.access_token);
+		const provider = new ActivityProvider(client, clientId);
+
+		const repository = new ActivityRepository(env);
+		const latest = await repository.getLatest(activityType, clientId);
+
+		if (latest) {
+			const history = await provider.getActivity(activityType, latest[1], new Date());
+			const prev_id = latest[0];
+			const new_entries = history.filter(x => x._id != prev_id);
+			if (new_entries.length) {
+				await repository.insertMany(new_entries);
+			}
+
+			await repository.upsert(history.find(x => x._id == prev_id)!);
+		}
+		else {
+			const history = await provider.getActivityAt(activityType, new Date(), 30);
+			await repository.insertMany(history);
+		}
 	}
 }

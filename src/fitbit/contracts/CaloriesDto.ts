@@ -2,8 +2,7 @@ interface CaloriesDto {
     activities_calories: CaloriesEntryDto[];
 }
 
-interface CaloriesEntryDto {
-    dateTime: string;
+interface CaloriesEntryDto extends ActivityDto {
     // fitbitApp
     value: number;
 }

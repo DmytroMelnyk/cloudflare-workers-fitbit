@@ -47,3 +47,7 @@ https://filess.io/#pricing
 https://www.harperdb.io/pricing -> https://api.harperdb.io/#16985084-0ada-492b-a202-46500d844ab9 -> https://hub.docker.com/r/harperdb/harperdb
 https://www.mongodb.com/pricing -> https://www.mongodb.com/docs/realm/web/install/ -> https://www.mongodb.com/developer/products/atlas/cloudflare-worker-rest-api/ -> https://davistobias.com/articles/mongodb-cloudflare/ -> https://github.com/mongodb-developer/cloudflare-worker-rest-api-atlas/blob/main/src/index.ts
 https://fauna.com/pricing
+
+
+
+https://www.mongodb.com/community/forums/t/bulk-write-operations-in-realm-node-js-sdk/118327/3

@@ -2,8 +2,7 @@ interface ActiveZoneDto {
     activities_active_zone_minutes: ActiveZoneEntryDto[];
 }
 
-interface ActiveZoneEntryDto {
-    dateTime: string;
+interface ActiveZoneEntryDto extends ActivityDto {
     value: ZoneMinutesDto;
 }
 

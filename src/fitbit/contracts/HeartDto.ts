@@ -2,8 +2,7 @@ interface HeartDto {
     activities_heart: HeartEntryDto[];
 }
 
-interface HeartEntryDto {
-    dateTime: string;
+interface HeartEntryDto extends ActivityDto {
     value: HeartRateDto;
 }
 

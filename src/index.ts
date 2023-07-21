@@ -4,6 +4,7 @@ import { ClientAuth, ClientCallback, ClientWeight, TestRoute } from "./router/fi
 import { CronHandler } from './cron/fitbit';
 import { FitbitApiData } from './fitbit/FitbitApiData';
 import { Env } from './env';
+import { ActivityType } from './domain/Activity';
 
 
 const router = OpenAPIRouter({
@@ -64,6 +65,27 @@ export default {
 				break;
 			case "0 * * * *":
 				await FitbitApiData.for_all_keys(env, clientId => CronHandler.syncWeight(env, clientId));
+				break;
+			case "1 * * * *":
+				await FitbitApiData.for_all_keys(env, clientId => CronHandler.syncActivity(env, clientId, ActivityType.BREATHING_RATE));
+				break;
+			case "2 * * * *":
+				await FitbitApiData.for_all_keys(env, clientId => CronHandler.syncActivity(env, clientId, ActivityType.ACTIVE_ZONE_MINUTES));
+				break;
+			case "3 * * * *":
+				await FitbitApiData.for_all_keys(env, clientId => CronHandler.syncActivity(env, clientId, ActivityType.DAILY_CALORIES));
+				break;
+			case "4 * * * *":
+				await FitbitApiData.for_all_keys(env, clientId => CronHandler.syncActivity(env, clientId, ActivityType.DAILY_STEPS));
+				break;
+			case "5 * * * *":
+				await FitbitApiData.for_all_keys(env, clientId => CronHandler.syncActivity(env, clientId, ActivityType.HEART_RATE_VARIABILITY));
+				break;
+			case "6 * * * *":
+				await FitbitApiData.for_all_keys(env, clientId => CronHandler.syncActivity(env, clientId, ActivityType.RESTING_HEART_RATE));
+				break;
+			case "7 * * * *":
+				await FitbitApiData.for_all_keys(env, clientId => CronHandler.syncActivity(env, clientId, ActivityType.TEMP_SKIN_NIGHTLY_RELATIVE));
 				break;
 			default:
 				console.log(`unprocessed cron: ${event.cron}`);

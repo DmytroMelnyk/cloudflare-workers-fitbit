@@ -2,8 +2,7 @@ interface BreathingRateDto {
     br: BreathingRateEntryDto[];
 }
 
-interface BreathingRateEntryDto {
-    dateTime: string;
+interface BreathingRateEntryDto extends ActivityDto {
     value: BrDto;
 }
 
