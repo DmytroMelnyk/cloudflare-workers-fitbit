@@ -1,5 +1,5 @@
 interface CaloriesDto {
-    activities_calories: CaloriesEntryDto[];
+    'activities-calories': CaloriesEntryDto[];
 }
 
 interface CaloriesEntryDto extends ActivityDto {

@@ -1,5 +1,5 @@
 interface StepsDto {
-    activities_steps: StepsEntryDto[];
+    'activities-steps': StepsEntryDto[];
 }
 
 interface StepsEntryDto extends ActivityDto {

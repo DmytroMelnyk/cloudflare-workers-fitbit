@@ -66,10 +66,12 @@ export class ActivityProvider {
 
     mapActivity<T extends ActivityDto>(dto: T, activityType: ActivityType, valueSelector: Predicate<T>) {
         return <Activity>{
-            _id: dto.dateTime,
-            clientId: this.clientId,
+            _id: {
+                logId: dto.dateTime,
+                clientId: this.clientId,
+                type: activityType,
+            },
             timestamp: new Date(Date.parse(dto.dateTime)),
-            type: activityType,
             value: valueSelector(dto)
         };
     }

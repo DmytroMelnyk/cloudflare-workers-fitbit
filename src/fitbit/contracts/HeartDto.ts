@@ -1,5 +1,5 @@
 interface HeartDto {
-    activities_heart: HeartEntryDto[];
+    'activities-heart': HeartEntryDto[];
 }
 
 interface HeartEntryDto extends ActivityDto {

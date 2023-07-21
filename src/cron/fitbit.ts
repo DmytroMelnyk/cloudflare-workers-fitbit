@@ -77,12 +77,14 @@ export class CronHandler {
 		if (latest) {
 			const history = await provider.getActivity(activityType, latest[1], new Date());
 			const prev_id = latest[0];
-			const new_entries = history.filter(x => x._id != prev_id);
+			const new_entries = history
+				.filter(x => x._id.clientId != prev_id.clientId && x._id.logId != prev_id.logId && x._id.type != prev_id.type);
 			if (new_entries.length) {
 				await repository.insertMany(new_entries);
 			}
 
-			await repository.upsert(history.find(x => x._id == prev_id)!);
+			await repository.upsert(history
+				.find(x => x._id.clientId == prev_id.clientId && x._id.logId == prev_id.logId && x._id.type == prev_id.type)!);
 		}
 		else {
 			const history = await provider.getActivityAt(activityType, new Date(), 30);

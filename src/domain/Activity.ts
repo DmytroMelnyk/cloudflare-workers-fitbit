@@ -1,9 +1,13 @@
-export interface Activity extends globalThis.Realm.Services.MongoDB.Document {
-    _id: string;
+export interface ActivityKey {
+    logId: string,
+    type: ActivityType;
     clientId: string;
+}
+
+export interface Activity extends globalThis.Realm.Services.MongoDB.Document {
+    _id: ActivityKey;
     timestamp: Date;
     value: number;
-    type: ActivityType;
 }
 
 export enum ActivityType {

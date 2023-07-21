@@ -1,5 +1,5 @@
 import { Env } from "../env";
-import { Activity, ActivityType } from "./Activity";
+import { Activity, ActivityKey, ActivityType } from "./Activity";
 import * as Realm from "realm-web";
 
 export class ActivityRepository {
@@ -12,11 +12,16 @@ export class ActivityRepository {
         this.credentials = Realm.Credentials.apiKey(env.ATLAS_APP_KEY);
     }
 
-    async getLatest(activityType: ActivityType, clientId: string): Promise<[date_time: string, timestamp: Date] | undefined> {
+    async getLatest(activityType: ActivityType, clientId: string): Promise<[key: ActivityKey, timestamp: Date] | undefined> {
         const collection = await this.getCollection();
         const results = await collection.aggregate([
             {
-                $match: { $and: [{ type: activityType }, { clientId: clientId }] }
+                $match: {
+                    $and: [
+                        { '_id.type': activityType },
+                        { '_id.clientId': clientId }
+                    ]
+                }
             },
             {
                 $sort: { timestamp: 1 }
@@ -50,8 +55,6 @@ export class ActivityRepository {
         const collection = await this.getCollection();
         return await collection.findOneAndReplace({
             _id: entry._id,
-            clientId: entry.clientId,
-            type: entry.type
         }, entry, { upsert: true });
     }
 

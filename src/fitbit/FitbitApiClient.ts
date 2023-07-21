@@ -50,7 +50,7 @@ export class FitbitApiClient {
 
     async getCalories(from: Date, to: Date): Promise<CaloriesEntryDto[]> {
         const response = await this.get(`/1/user/-/activities/calories/date/${from.fitbitFormat()}/${to.fitbitFormat()}.json`);
-        return (await response.json<CaloriesDto>()).activities_calories;
+        return (await response.json<CaloriesDto>())["activities-calories"];
     }
 
     getCaloriesAt(to: Date, daysBefore: number = 30 /*max days for fitbit api*/): Promise<CaloriesEntryDto[]> {
@@ -60,7 +60,7 @@ export class FitbitApiClient {
 
     async getActiveZones(from: Date, to: Date): Promise<ActiveZoneEntryDto[]> {
         const response = await this.get(`/1/user/-/activities/active-zone-minutes/date/${from.fitbitFormat()}/${to.fitbitFormat()}.json`);
-        return (await response.json<ActiveZoneDto>()).activities_active_zone_minutes;
+        return (await response.json<ActiveZoneDto>())["activities-active-zone-minutes"];
     }
 
     getActiveZonesAt(to: Date, daysBefore: number = 30 /*max days for fitbit api*/): Promise<ActiveZoneEntryDto[]> {
@@ -70,7 +70,7 @@ export class FitbitApiClient {
 
     async getSteps(from: Date, to: Date): Promise<StepsEntryDto[]> {
         const response = await this.get(`/1/user/-/activities/steps/date/${from.fitbitFormat()}/${to.fitbitFormat()}.json`);
-        return (await response.json<StepsDto>()).activities_steps;
+        return (await response.json<StepsDto>())["activities-steps"];
     }
 
     getStepsAt(to: Date, daysBefore: number = 30 /*max days for fitbit api*/): Promise<StepsEntryDto[]> {
@@ -80,7 +80,7 @@ export class FitbitApiClient {
 
     async getHeart(from: Date, to: Date): Promise<HeartEntryDto[]> {
         const response = await this.get(`/1/user/-/activities/heart/date/${from.fitbitFormat()}/${to.fitbitFormat()}.json`);
-        return (await response.json<HeartDto>()).activities_heart;
+        return (await response.json<HeartDto>())["activities-heart"];
     }
 
     getHeartAt(to: Date, daysBefore: number = 30 /*max days for fitbit api*/): Promise<HeartEntryDto[]> {

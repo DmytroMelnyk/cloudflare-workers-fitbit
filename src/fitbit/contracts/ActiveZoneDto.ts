@@ -1,5 +1,5 @@
 interface ActiveZoneDto {
-    activities_active_zone_minutes: ActiveZoneEntryDto[];
+    'activities-active-zone-minutes': ActiveZoneEntryDto[];
 }
 
 interface ActiveZoneEntryDto extends ActivityDto {
