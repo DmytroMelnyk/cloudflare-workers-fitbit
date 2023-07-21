@@ -67,6 +67,7 @@ export default {
 				await FitbitApiData.for_all_keys(env, clientId => CronHandler.syncWeight(env, clientId));
 				break;
 			case "* * * * *":
+				console.log(new Date().getMinutes());
 				const syncActivity = <ActivityType>Object.values(ActivityType)[new Date().getMinutes() % 7];
 				console.log(syncActivity);
 				await FitbitApiData.for_all_keys(env, clientId => CronHandler.syncActivity(env, clientId, syncActivity));
