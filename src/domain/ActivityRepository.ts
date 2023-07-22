@@ -58,14 +58,15 @@ export class ActivityRepository {
         }, entry, { upsert: true });
     }
 
-    async get(activityType: ActivityType, clientId: string, daysBefore: number) {
+    async get(activityType: ActivityType, clientId: string, from: Date) {
         const collection = await this.getCollection();
-        console.log(new Date().subtract(daysBefore));
         return collection.find({
-            clientId: clientId,
-            activityType: activityType,
+            $and: [
+                { "_id.clientId": clientId },
+                { "_id.type": activityType }
+            ],
             timestamp: {
-                "$gte": new Date().subtract(daysBefore)
+                "$gte": from
             }
         });
     }

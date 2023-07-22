@@ -43,13 +43,13 @@ export class WeightRepository {
         return await collection.insertMany(entries);
     }
 
-    async getWeight(clientId: string, daysBefore: number) {
+    async getWeight(clientId: string, from: Date) {
         const collection = await this.getCollection();
-        console.log(new Date().subtract(daysBefore));
+        //console.log(new Date().subtract(daysBefore));
         return collection.find({
             clientId: clientId,
             timestamp: {
-                "$gte": new Date().subtract(daysBefore)
+                "$gte": from
             }
         });
     }
