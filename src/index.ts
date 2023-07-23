@@ -65,8 +65,9 @@ export default {
 				break;
 			case "0-7 * * * *":
 				const minute = new Date().getMinutes();
-				if (minute < 7) {
-					const syncActivity = <ActivityType>Object.values(ActivityType)[minute % 7];
+				const activities = Object.values(ActivityType);
+				if (minute < activities.length) {
+					const syncActivity = <ActivityType>activities[minute % activities.length];
 					await FitbitApiData.for_all_keys(env, clientId => CronHandler.syncActivity(env, clientId, syncActivity));
 				}
 				else {
