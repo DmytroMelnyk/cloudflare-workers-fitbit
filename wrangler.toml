@@ -21,8 +21,5 @@ kv_namespaces = [
 ]
 
 [env.dev.vars]
-FAUNA_DOMAIN = "localhost"
-FAUNA_SCHEME = "http"
-FAUNA_PORT = 8443
 ATLAS_APP_ID = "application-0-nsnje"
 # echo <VALUE> | npx wrangler secret put ATLAS_APP_KEY --env dev

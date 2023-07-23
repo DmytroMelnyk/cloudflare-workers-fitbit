@@ -2,9 +2,9 @@ services:
   dev-container:
     # https://github.com/microsoft/vscode-dev-containers/blob/main/containers/typescript-node/.devcontainer/Dockerfile
     image: mcr.microsoft.com/vscode/devcontainers/typescript-node:18-bullseye
-    ports:
-      #- "8443:8443" port from dependency    
+    #ports:
+    #  - "8443:8443" #port from infra-service    
   
-  dependency:
+  infra-service:
     image: hello-world:latest
     network_mode: service:dev-container    

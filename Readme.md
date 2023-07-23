@@ -1,6 +1,5 @@
 ## Good sources:
 
-https://github.com/fauna-labs/fauna-workers
 https://github.com/cloudflare/miniflare-typescript-esbuild-jest
 https://github.com/cloudflare/itty-router-openapi
 https://itty.dev/itty-router/typescript#uniform-routers

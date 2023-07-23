@@ -1,5 +1,0 @@
-FAUNA_KEY=secret
-FAUNA_DOMAIN=localhost
-FAUNA_SCHEME=http
-FAUNA_PORT=8443
-FAUNA_GRAPHQL_HOST=http://localhost:8084
