@@ -1,6 +1,6 @@
 import './__global';
 import { OpenAPIRouter } from '@cloudflare/itty-router-openapi';
-import { ClientAuth, ClientCallback, ClientWeight, ClientActivity } from "./router/fitbit";
+import { ClientAuth, ClientCallback, ClientWeight, ClientActivity, ClientLatestHeartRate } from "./router/fitbit";
 import { CronHandler } from './cron/fitbit';
 import { FitbitApiData } from './fitbit/FitbitApiData';
 import { Env } from './env';
@@ -41,6 +41,7 @@ const router = OpenAPIRouter({
 });
 
 router.get("/:clientId/activity/:activity", ClientActivity);
+router.get("/:clientId/hr", ClientLatestHeartRate);
 router.get("/:clientId/weight", ClientWeight);
 router.get("/auth/:clientId", ClientAuth);
 router.get("/callback/:clientId", ClientCallback);
