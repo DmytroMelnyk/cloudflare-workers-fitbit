@@ -98,6 +98,11 @@ export class FitbitApiClient {
         return this.getBreathingRate(from, to);
     }
 
+    async getHeartLatest(): Promise<HeartIntradayRateDto | undefined> {
+        const response = await this.get('/1/user/-/activities/heart/date/today/today/1min.json?timezone=UTC');
+        return (await response.json<HeartIntradayDto>())["activities-heart-intraday"].dataset.pop();
+    }
+
     private async get(url: string): Promise<Response> {
         const result = await fetch(`https://api.fitbit.com${url}`, {
             method: "GET",

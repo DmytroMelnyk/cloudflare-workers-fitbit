@@ -151,3 +151,29 @@ export class ClientActivity extends OpenAPIRoute {
 		return new Response(JSONtoXML({ data: { entry: history } }));
 	}
 }
+
+export class ClientLatestHeartRate extends OpenAPIRoute {
+	static schema = {
+		tags: ["Data"],
+		summary: "Get Latest Heart Rate",
+		parameters: {
+			clientId: Path(Str, {
+				description: "Client Id",
+				default: "23R87T"
+			})
+		}
+	};
+
+	async handle(
+		request: Request,
+		env: Env,
+		context: ExecutionContext,
+		data: Record<string, any>
+	) {
+		const { clientId } = data;
+		const token = await FitbitApiData.get(env, clientId);
+		const client = new FitbitApiClient(token?.oauth2Token?.access_token!);
+		const hr = await client.getHeartLatest();
+		return new Response(JSONtoXML({ data: { entry: hr } }));
+	}
+}
