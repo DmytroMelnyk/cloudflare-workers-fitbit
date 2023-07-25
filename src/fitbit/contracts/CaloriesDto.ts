@@ -4,5 +4,5 @@ interface CaloriesDto {
 
 interface CaloriesEntryDto extends ActivityDto {
     // fitbitApp
-    value: number;
+    value: string;
 }

@@ -3,5 +3,5 @@ interface StepsDto {
 }
 
 interface StepsEntryDto extends ActivityDto {
-    value: number;
+    value: string;
 }

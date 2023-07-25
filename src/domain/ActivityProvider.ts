@@ -18,10 +18,10 @@ export class ActivityProvider {
                     .map(x => this.mapActivity(x, activityType, x => x.value.breathingRate));
             case ActivityType.DAILY_CALORIES:
                 return (await this.fitbitApiClient.getCalories(from, to))
-                    .map(x => this.mapActivity(x, activityType, x => x.value));
+                    .map(x => this.mapActivity(x, activityType, x => parseInt(x.value)));
             case ActivityType.DAILY_STEPS:
                 return (await this.fitbitApiClient.getSteps(from, to))
-                    .map(x => this.mapActivity(x, activityType, x => x.value));
+                    .map(x => this.mapActivity(x, activityType, x => parseInt(x.value)));
             case ActivityType.HEART_RATE_VARIABILITY:
                 return (await this.fitbitApiClient.getHrv(from, to))
                     .map(x => this.mapActivity(x, activityType, x => x.value.dailyRmssd));
@@ -46,10 +46,10 @@ export class ActivityProvider {
                     .map(x => this.mapActivity(x, activityType, x => x.value.breathingRate));
             case ActivityType.DAILY_CALORIES:
                 return (await this.fitbitApiClient.getCaloriesAt(to, daysBefore))
-                    .map(x => this.mapActivity(x, activityType, x => x.value));
+                    .map(x => this.mapActivity(x, activityType, x => parseInt(x.value)));
             case ActivityType.DAILY_STEPS:
                 return (await this.fitbitApiClient.getStepsAt(to, daysBefore))
-                    .map(x => this.mapActivity(x, activityType, x => x.value));
+                    .map(x => this.mapActivity(x, activityType, x => parseInt(x.value)));
             case ActivityType.HEART_RATE_VARIABILITY:
                 return (await this.fitbitApiClient.getHrvAt(to, daysBefore))
                     .map(x => this.mapActivity(x, activityType, x => x.value.dailyRmssd));

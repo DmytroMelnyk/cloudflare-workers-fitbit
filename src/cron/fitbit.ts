@@ -74,11 +74,10 @@ export class CronHandler {
 		const repository = new ActivityRepository(env);
 		const latest = await repository.getLatest(activityType, clientId);
 
-		console.log(latest);
 		if (latest) {
 			const history = await provider.getActivity(activityType, latest[1], new Date());
 			const prev_id = latest[0];
-			const new_entries = history.filter(x => x._id.logId != prev_id.logId);
+			const new_entries = history.filter(x => x._id.logId != prev_id.logId && x.value > 0.001);
 			if (new_entries.length) {
 				await repository.insertMany(new_entries);
 			}
