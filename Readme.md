@@ -13,10 +13,14 @@ https://developers.cloudflare.com/workers/tutorials/manage-projects-with-lerna/
 
 ## How to run
 1. Open as dev container in VS Code
-1. Create database Products:
-11. Go to Fauna extension in the VS Code
-11. Press Create button and select collection
-11. Name collection as Products
+1. npm install --dev
+1. npx wrangler login
+
+## Connection to Atlas db:
+1. In the Atlas UI Project dashboard, click the App Services tab.
+2. Go to Data Access -> Authentication and add API Key. We will use API Key auth for Realm
+
+shutdown wrangler if port is busy: fuser -k 8787/tcp
 
 # list all installed packages
 npm ll
