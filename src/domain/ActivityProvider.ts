@@ -1,4 +1,3 @@
-import { InputValidationException } from "@cloudflare/itty-router-openapi";
 import { FitbitApiClient } from "../fitbit/FitbitApiClient";
 import { ActivityType, Activity } from "./Activity";
 
@@ -32,7 +31,7 @@ export class ActivityProvider {
                 return (await this.fitbitApiClient.getTempSkin(from, to))
                     .map(x => this.mapActivity(x, activityType, x => x.value.nightlyRelative));
             default:
-                throw new InputValidationException(`Unknown activity type: ${activityType}`);
+                throw new Error(`Unknown activity type: ${activityType}`);
         }
     }
 
@@ -60,7 +59,7 @@ export class ActivityProvider {
                 return (await this.fitbitApiClient.getTempSkinAt(to, daysBefore))
                     .map(x => this.mapActivity(x, activityType, x => x.value.nightlyRelative));
             default:
-                throw new InputValidationException(`Unknown activity type: ${activityType}`);
+                throw new Error(`Unknown activity type: ${activityType}`);
         }
     }
 

@@ -18,7 +18,8 @@
     "wrangler": "^3.63.1"
   },
   "dependencies": {
-    "@cloudflare/itty-router-openapi": "^1.1.1",
+    "chanfana": "^2.0.2",
+    "itty-router": "^5.0.17",
     "realm-web": "^2.0.1"
   }
 }

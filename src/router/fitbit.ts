@@ -1,4 +1,5 @@
-import { OpenAPIRoute, Path, Str, Header, Query, DateOnly, Num, Enumeration } from "@cloudflare/itty-router-openapi";
+import { OpenAPIRoute } from "chanfana";
+import { z } from 'zod';
 import { Env } from "../env";
 import { FitbitApiAuthorizer } from "../fitbit/FitbitApiAuthorizer";
 import { ApiScope } from "../fitbit/ApiScope";
@@ -10,28 +11,21 @@ import { ActivityType } from "../domain/Activity";
 import { ActivityRepository } from "../domain/ActivityRepository";
 
 export class ClientAuth extends OpenAPIRoute {
-	static schema = {
+	schema = {
 		tags: ["Registration"],
 		summary: "Register Client",
-		parameters: {
-			clientId: Path(Str, {
-				description: "Client Id",
-				default: "23R87T"
-			}),
-			clientSecret: Header(Str, {
-				description: "Client Secret",
-				format: "password",
-				default: "20c81880494a27594c1b3512748702ed"
-			})
+		request: {
+			params: z.object({ clientId: z.string().default("23R87T").describe("Client Id") }),
+			headers: z.object({ clientSecret: z.string().describe("Client Secret") })
 		}
 	};
 
 	async handle(
 		request: Request,
 		env: Env,
-		context: ExecutionContext,
-		data: Record<string, any>
+		context: ExecutionContext
 	) {
+		const data = await this.getValidatedData<typeof this.schema>();
 		const { clientId, clientSecret } = data;
 
 		const api = new FitbitApiAuthorizer(clientId, clientSecret);
@@ -59,24 +53,21 @@ export class ClientAuth extends OpenAPIRoute {
 }
 
 export class ClientCallback extends OpenAPIRoute {
-	static schema = {
+	schema = {
 		tags: ["Registration"],
 		summary: "Continue Registration",
-		parameters: {
-			clientId: Path(Str, {
-				description: "Client Id",
-				default: "23R87T"
-			}),
-			code: Query(Str)
+		request: {
+			params: z.object({ clientId: z.string().default("23R87T").describe("Client Id") }),
+			query: z.object({ code: z.string() })
 		}
 	};
 
 	async handle(
 		request: Request,
 		env: Env,
-		context: ExecutionContext,
-		data: Record<string, any>
+		context: ExecutionContext
 	) {
+		const data = await this.getValidatedData<typeof this.schema>();
 		const { clientId, code } = data;
 		const fitbitData = (await FitbitApiData.get(env, clientId))!;
 		const client = new FitbitApiAuthorizer(fitbitData.clientId, fitbitData.clientSecret);
@@ -90,26 +81,21 @@ export class ClientCallback extends OpenAPIRoute {
 }
 
 export class ClientWeight extends OpenAPIRoute {
-	static schema = {
+	schema = {
 		tags: ["Data"],
 		summary: "Get Weight",
-		parameters: {
-			clientId: Path(Str, {
-				description: "Client Id",
-				default: "23R87T"
-			}),
-			from: Query(DateOnly, {
-				default: "2023-06-01"
-			})
+		request: {
+			params: z.object({ clientId: z.string().default("23R87T").describe("Client Id") }),
+			query: z.object({ from: z.string().date().default("2023-06-01") })
 		}
 	};
 
 	async handle(
 		request: Request,
 		env: Env,
-		context: ExecutionContext,
-		data: Record<string, any>
+		context: ExecutionContext
 	) {
+		const data = await this.getValidatedData<typeof this.schema>();
 		const { clientId, from } = data;
 
 		const repository = new WeightRepository(env);
@@ -121,28 +107,21 @@ export class ClientWeight extends OpenAPIRoute {
 }
 
 export class ClientActivity extends OpenAPIRoute {
-	static schema = {
+	schema = {
 		tags: ["Data"],
 		summary: "Get Activity",
-		parameters: {
-			clientId: Path(Str, {
-				description: "Client Id",
-				default: "23R87T"
-			}),
-			activity: Path(new Enumeration({ values: ActivityType }), {
-				description: "Activity type",
-				default: ActivityType.ACTIVE_ZONE_MINUTES,
-			}),
-			from: Query(DateOnly)
+		request: {
+			params: z.object({ clientId: z.string().default("23R87T").describe("Client Id").optional(), from: z.string().date().default("2024-01-30") }),
+			path: z.object({ activity: z.nativeEnum(ActivityType).default(ActivityType.ACTIVE_ZONE_MINUTES).describe("Activity type") }),
 		}
 	};
 
 	async handle(
 		request: Request,
 		env: Env,
-		context: ExecutionContext,
-		data: Record<string, any>
+		context: ExecutionContext
 	) {
+		const data = await this.getValidatedData<typeof this.schema>();
 		const { clientId, activity, from } = data;
 		const repository = new ActivityRepository(env);
 
@@ -153,23 +132,20 @@ export class ClientActivity extends OpenAPIRoute {
 }
 
 export class ClientLatestHeartRate extends OpenAPIRoute {
-	static schema = {
+	schema = {
 		tags: ["Data"],
 		summary: "Get Latest Heart Rate",
-		parameters: {
-			clientId: Path(Str, {
-				description: "Client Id",
-				default: "23R87T"
-			})
+		request: {
+			params: z.object({ clientId: z.string().default("23R87T").describe("Client Id") }),
 		}
 	};
 
 	async handle(
 		request: Request,
 		env: Env,
-		context: ExecutionContext,
-		data: Record<string, any>
+		context: ExecutionContext
 	) {
+		const data = await this.getValidatedData<typeof this.schema>();
 		const { clientId } = data;
 		const token = await FitbitApiData.get(env, clientId);
 		const client = new FitbitApiClient(token?.oauth2Token?.access_token!);
