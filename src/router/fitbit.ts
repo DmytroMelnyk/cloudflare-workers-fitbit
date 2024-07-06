@@ -1,4 +1,4 @@
-import { OpenAPIRoute } from "chanfana";
+import { OpenAPIRoute, Str } from "chanfana";
 import { z } from 'zod';
 import { Env } from "../env";
 import { FitbitApiAuthorizer } from "../fitbit/FitbitApiAuthorizer";
@@ -16,7 +16,8 @@ export class ClientAuth extends OpenAPIRoute {
 		summary: "Register Client",
 		request: {
 			params: z.object({ clientId: z.string().default("23R87T").describe("Client Id") }),
-			headers: z.object({ clientSecret: z.string().describe("Client Secret") })
+			//headers: z.object({ "x-client-secret": z.string().describe("Client Secret") })
+			query: z.object({ "clientSecret": z.string().describe("Client Secret") })
 		}
 	};
 
@@ -26,12 +27,13 @@ export class ClientAuth extends OpenAPIRoute {
 		context: ExecutionContext
 	) {
 		const data = await this.getValidatedData<typeof this.schema>();
-		const { clientId, clientSecret } = data;
+		const clientId = data.params.clientId;
+		const clientSecret = data.query.clientSecret;
 
 		const api = new FitbitApiAuthorizer(clientId, clientSecret);
 		await FitbitApiData.put(env, clientId, clientSecret, undefined);
 
-		const callback_url = api.getLoginUrl(
+		const loginUrl = api.getLoginUrl(
 			`${new URL(request.url).origin}/callback/${clientId}`,
 			ApiScope.ACTIVITY,
 			ApiScope.CARDIO_FITNESS,
@@ -48,7 +50,8 @@ export class ClientAuth extends OpenAPIRoute {
 			ApiScope.TEMPERATURE,
 			ApiScope.WEIGHT
 		);
-		return Response.redirect(callback_url, 302);
+
+		return Response.redirect(loginUrl, 302);
 	}
 }
 
@@ -68,7 +71,8 @@ export class ClientCallback extends OpenAPIRoute {
 		context: ExecutionContext
 	) {
 		const data = await this.getValidatedData<typeof this.schema>();
-		const { clientId, code } = data;
+		const clientId = data.params.clientId;
+		const code = data.query.code;
 		const fitbitData = (await FitbitApiData.get(env, clientId))!;
 		const client = new FitbitApiAuthorizer(fitbitData.clientId, fitbitData.clientSecret);
 		const requestUrl = new URL(request.url);
@@ -96,7 +100,8 @@ export class ClientWeight extends OpenAPIRoute {
 		context: ExecutionContext
 	) {
 		const data = await this.getValidatedData<typeof this.schema>();
-		const { clientId, from } = data;
+		const clientId = data.params.clientId;
+		const from = new Date(data.query.from);
 
 		const repository = new WeightRepository(env);
 
@@ -111,8 +116,11 @@ export class ClientActivity extends OpenAPIRoute {
 		tags: ["Data"],
 		summary: "Get Activity",
 		request: {
-			params: z.object({ clientId: z.string().default("23R87T").describe("Client Id").optional(), from: z.string().date().default("2024-01-30") }),
-			path: z.object({ activity: z.nativeEnum(ActivityType).default(ActivityType.ACTIVE_ZONE_MINUTES).describe("Activity type") }),
+			params: z.object({
+				clientId: z.string().default("23R87T").describe("Client Id"),
+				activity: z.nativeEnum(ActivityType).default(ActivityType.ACTIVE_ZONE_MINUTES).describe("Activity type")
+			}),
+			query: z.object({ from: z.string().date().default("2024-01-30") }),
 		}
 	};
 
@@ -122,7 +130,9 @@ export class ClientActivity extends OpenAPIRoute {
 		context: ExecutionContext
 	) {
 		const data = await this.getValidatedData<typeof this.schema>();
-		const { clientId, activity, from } = data;
+		const { clientId, activity } = data.params;
+		const from = new Date(data.query.from);
+
 		const repository = new ActivityRepository(env);
 
 		const history = await repository.get(activity, clientId, from);
