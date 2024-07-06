@@ -156,7 +156,7 @@ export class ClientLatestHeartRate extends OpenAPIRoute {
 		context: ExecutionContext
 	) {
 		const data = await this.getValidatedData<typeof this.schema>();
-		const { clientId } = data;
+		const clientId = data.params.clientId;
 		const token = await FitbitApiData.get(env, clientId);
 		const client = new FitbitApiClient(token?.oauth2Token?.access_token!);
 		const hr = await client.getHeartLatest();
